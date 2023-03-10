@@ -2,10 +2,23 @@
 #define TREEMULTIMAP_INCLUDED
 
 #include <vector>
+#include <string>
 
 template <typename KeyType, typename ValueType>
 class TreeMultimap
 {
+    private:
+      //std::vector<Iterator> keys;
+      struct Node
+      {
+          Node(KeyType keyValue) {key = keyValue;}
+          vector<ValueType> values;
+          KeyType key;
+          Node*    m_next;
+          Node*    m_prev;
+      };
+      Node* m_head;
+      int size;
   public:
     class Iterator
     {
@@ -13,11 +26,12 @@ class TreeMultimap
         Iterator()
         {
             currIndex = 0;
+            node = nullptr;
         }
         
-        Iterator(KeyType& key)
+        Iterator(Node* node)
         {
-            this->key = key;
+            this->node = node;
             currIndex = 0;
         }
         
@@ -35,13 +49,14 @@ class TreeMultimap
 
         ValueType& get_value() const
         {
-            if(is_valid())
-                return values[index];
+            //if(is_valid())
+                return node->values[currIndex];
+            
         }
 
         bool is_valid() const
         {
-            return values.size() > 0 && (currIndex >= 0 && currIndex < values.size());
+            return node != nullptr && (currIndex >= 0 && currIndex < node->values.size());
         }
 
         void advance()
@@ -50,9 +65,10 @@ class TreeMultimap
         }
 
       private:
-        KeyType key;
-        std::vector<ValueType*> values;
+        Node* node;
+        //std::vector<ValueType*> values;
         int currIndex;
+    
     };
 
     TreeMultimap()
@@ -75,7 +91,7 @@ class TreeMultimap
 
     void insert(const KeyType& key, const ValueType& value)
     {
-        Iterator existingKey = find(key);
+        /*Iterator existingKey = find(key);
         //if key exists already
         if(existingKey.is_valid())
         {
@@ -88,30 +104,46 @@ class TreeMultimap
                 m_head = new Node(key);
                 return;
             }
-        }
+        }*/
         
+        if(m_head == nullptr)
+        {
+            m_head = new Node(key);
+            m_head->m_prev = nullptr;
+            m_head->m_next = nullptr;
+            m_head->values.push_back(value);
+            return;
+        }
         Node* currNode = m_head;
         for(;;)
         {
-            if(key == currNode->m_value.key)
+            if(key == currNode->key)
+            {
+                std::cerr << key << std::endl;
+                currNode->values.push_back(value);
                 return;
-            if(key < currNode->m_value.key)
+            }
+            if(key < currNode->key)
             {
                 if(currNode->m_prev != nullptr)
                     currNode = currNode->m_prev;
                 else
                 {
-                    currNode->m_prev = new Node(Iterator(key));
+                    currNode->m_prev = new Node(key);
+                    currNode->m_prev->m_next = currNode;
+                    currNode->m_prev->values.push_back(value);
                     return;
                 }
             }
-            else if(key > currNode->m_value.key)
+            else if(key > currNode->key)
             {
                 if(currNode->m_next != nullptr)
                     currNode = currNode->m_next;
                 else
                 {
-                    currNode->m_next = new Node(Iterator(key));
+                    currNode->m_next = new Node(key);
+                    currNode->m_next->m_prev = currNode;
+                    currNode->m_next->values.push_back(value);
                     return;
                 }
             }
@@ -123,27 +155,15 @@ class TreeMultimap
         Node* currNode = m_head;
         while(currNode != nullptr)
         {
-            if(key == currNode->m_value.key)
-                return currNode->m_value;
-            else if(key < currNode->m_value.key)
+            if(key == currNode->key)
+                return Iterator(currNode);
+            else if(key < currNode->key)
                 currNode = currNode->m_prev;
             else
                 currNode = currNode->m_next;
         }
         return Iterator();
     }
-
-  private:
-    //std::vector<Iterator> keys;
-    struct Node
-    {
-        Node(Iterator value) {m_value = value;}
-        Iterator m_value;
-        Node*    m_next;
-        Node*    m_prev;
-    };
-    Node* m_head;
-    int size;
 };
 
 #endif // TREEMULTIMAP_INCLUDED

@@ -6,6 +6,7 @@ using namespace std;
 
 
 #include "treemm.h"
+class Iterator;
 
 //////////////////////////i/////////////////////////////////////////////////////
 //
@@ -30,15 +31,39 @@ const string MOVIE_DATAFILE = "movies.txt";
 
 int main()
 {
-    TreeMultimap<int, int> tmm;
+    //TreeMultimap<int, int> tmm;
     TreeMultimap<int,int>::Iterator it;
     if (!it.is_valid()) std::cout << "This will print!\n";
     
-    TreeMultimap<std::string, string>* tmmptr =
+    /*TreeMultimap<std::string, string>* tmmptr =
      new TreeMultimap<std::string, string>();
      tmmptr->insert("carey", "hi");
      tmmptr->insert("cindy", "bye");
-     delete tmmptr; // TreeMultimap's destructor runs
+     delete tmmptr; // TreeMultimap's destructor runs*/
+    
+    TreeMultimap<std::string, int> tmm;
+     tmm.insert("carey", 5);
+     tmm.insert("carey", 6);
+    
+     tmm.insert("carey", 7);
+     tmm.insert("david", 25);
+     tmm.insert("david", 425);
+     TreeMultimap<std::string,int>::Iterator it2 = tmm.find("carey");
+     // prints 5, 6, and 7 in some order
+        while (it2.is_valid()) {
+     std::cout << it2.get_value() << std::endl;
+     it2.advance();
+     }
+    
+    TreeMultimap<std::string,int>::Iterator it4 = tmm.find("david");
+    // prints 5, 6, and 7 in some order
+       while (it4.is_valid()) {
+    std::cout << it4.get_value() << std::endl;
+    it4.advance();
+    }
+     //Iterator it3 = tmm.find("laura");
+     //if (!it3.is_valid())
+     //std::cout << "laura is not in the multimap!\n";
 	UserDatabase udb;
 	if (0&&!udb.load(USER_DATAFILE))  // In skeleton, load always return false
 	{
