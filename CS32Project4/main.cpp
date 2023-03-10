@@ -35,11 +35,11 @@ int main()
     TreeMultimap<int,int>::Iterator it;
     if (!it.is_valid()) std::cout << "This will print!\n";
     
-    /*TreeMultimap<std::string, string>* tmmptr =
+    TreeMultimap<std::string, string>* tmmptr =
      new TreeMultimap<std::string, string>();
      tmmptr->insert("carey", "hi");
      tmmptr->insert("cindy", "bye");
-     delete tmmptr; // TreeMultimap's destructor runs*/
+     delete tmmptr; // TreeMultimap's destructor runs
     
     TreeMultimap<std::string, int> tmm;
      tmm.insert("carey", 5);
@@ -61,9 +61,9 @@ int main()
     std::cout << it4.get_value() << std::endl;
     it4.advance();
     }
-     //Iterator it3 = tmm.find("laura");
-     //if (!it3.is_valid())
-     //std::cout << "laura is not in the multimap!\n";
+     TreeMultimap<std::string, int>::Iterator it3 = tmm.find("laura");
+     if (!it3.is_valid())
+     std::cout << "laura is not in the multimap!\n";
 	UserDatabase udb;
 	if (0&&!udb.load(USER_DATAFILE))  // In skeleton, load always return false
 	{

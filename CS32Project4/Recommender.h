@@ -23,7 +23,7 @@ class Recommender
     Recommender(const UserDatabase& user_database,
                 const MovieDatabase& movie_database);
     std::vector<MovieAndRank> recommend_movies(const std::string& user_email,
-                                               int movie_count);
+                                               int movie_count) const;
 
   private:
 };

@@ -12,7 +12,7 @@ Recommender::Recommender(const UserDatabase& user_database,
     // Replace this line with correct code.
 }
 
-vector<MovieAndRank> Recommender::recommend_movies(const string& user_email, int movie_count)
+vector<MovieAndRank> Recommender::recommend_movies(const string& user_email, int movie_count) const
 {
     return vector<MovieAndRank>();  // Replace this line with correct code.
 }

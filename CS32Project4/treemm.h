@@ -14,8 +14,8 @@ class TreeMultimap
           Node(KeyType keyValue) {key = keyValue;}
           vector<ValueType> values;
           KeyType key;
-          Node*    m_next;
-          Node*    m_prev;
+          Node*    right;
+          Node*    left;
       };
       Node* m_head;
       int size;
@@ -83,7 +83,7 @@ class TreeMultimap
         //create a new Node that stores the next node, delete the current node, and set current node to the next node
         while(p != nullptr)
         {
-            Node* n = p->m_next;
+            Node* n = p->right;
             delete p;
             p = n;
         }
@@ -109,8 +109,8 @@ class TreeMultimap
         if(m_head == nullptr)
         {
             m_head = new Node(key);
-            m_head->m_prev = nullptr;
-            m_head->m_next = nullptr;
+            m_head->left = nullptr;
+            m_head->right = nullptr;
             m_head->values.push_back(value);
             return;
         }
@@ -119,31 +119,33 @@ class TreeMultimap
         {
             if(key == currNode->key)
             {
-                std::cerr << key << std::endl;
+                //std::cerr << key << std::endl;
                 currNode->values.push_back(value);
                 return;
             }
             if(key < currNode->key)
             {
-                if(currNode->m_prev != nullptr)
-                    currNode = currNode->m_prev;
+                if(currNode->left != nullptr)
+                    currNode = currNode->left;
                 else
                 {
-                    currNode->m_prev = new Node(key);
-                    currNode->m_prev->m_next = currNode;
-                    currNode->m_prev->values.push_back(value);
+                    currNode->left = new Node(key);
+                    currNode->left->right = nullptr;
+                    currNode->left->left = nullptr;
+                    currNode->left->values.push_back(value);
                     return;
                 }
             }
             else if(key > currNode->key)
             {
-                if(currNode->m_next != nullptr)
-                    currNode = currNode->m_next;
+                if(currNode->right != nullptr)
+                    currNode = currNode->right;
                 else
                 {
-                    currNode->m_next = new Node(key);
-                    currNode->m_next->m_prev = currNode;
-                    currNode->m_next->values.push_back(value);
+                    currNode->right = new Node(key);
+                    currNode->right->left = nullptr;
+                    currNode->right->right = nullptr;
+                    currNode->right->values.push_back(value);
                     return;
                 }
             }
@@ -158,10 +160,11 @@ class TreeMultimap
             if(key == currNode->key)
                 return Iterator(currNode);
             else if(key < currNode->key)
-                currNode = currNode->m_prev;
+                currNode = currNode->left;
             else
-                currNode = currNode->m_next;
+                currNode = currNode->right;
         }
+        std::cerr << "item not found" << std::endl;
         return Iterator();
     }
 };
