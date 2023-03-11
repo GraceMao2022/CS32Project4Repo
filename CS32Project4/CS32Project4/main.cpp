@@ -6,7 +6,8 @@ using namespace std;
 
 
 #include "treemm.h"
-class Iterator;
+#include "MovieDatabase.h"
+#include "Movie.h"
 
 //////////////////////////i/////////////////////////////////////////////////////
 //
@@ -31,8 +32,16 @@ const string MOVIE_DATAFILE = "movies.txt";
 
 int main()
 {
+    MovieDatabase mdb;
+    mdb.load("movie2.txt");
+    
+    Movie* movie = mdb.get_movie_from_id("ID10782");
+    if(movie == nullptr)
+        cerr << "movie not found through id" << endl;
+    else
+        cerr << movie->get_title() << endl;
     //TreeMultimap<int, int> tmm;
-    TreeMultimap<int,int>::Iterator it;
+   /* TreeMultimap<int,int>::Iterator it;
     if (!it.is_valid()) std::cout << "This will print!\n";
     
     TreeMultimap<std::string, string>* tmmptr =
@@ -63,7 +72,7 @@ int main()
     }
      TreeMultimap<std::string, int>::Iterator it3 = tmm.find("laura");
      if (!it3.is_valid())
-     std::cout << "laura is not in the multimap!\n";
+     std::cout << "laura is not in the multimap!\n";*/
 	UserDatabase udb;
 	if (0&&!udb.load(USER_DATAFILE))  // In skeleton, load always return false
 	{

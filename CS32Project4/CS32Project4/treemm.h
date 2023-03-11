@@ -12,7 +12,7 @@ class TreeMultimap
       struct Node
       {
           Node(KeyType keyValue) {key = keyValue;}
-          vector<ValueType> values;
+          std::vector<ValueType> values;
           KeyType key;
           Node*    right;
           Node*    left;
@@ -164,7 +164,7 @@ class TreeMultimap
             else
                 currNode = currNode->right;
         }
-        std::cerr << "item not found" << std::endl;
+        //std::cerr << "item not found" << std::endl;
         return Iterator();
     }
 };

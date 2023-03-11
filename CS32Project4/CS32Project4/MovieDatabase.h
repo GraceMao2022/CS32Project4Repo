@@ -5,6 +5,7 @@
 #include <vector>
 
 class Movie;
+#include "treemm.h"
 
 class MovieDatabase
 {
@@ -17,6 +18,16 @@ class MovieDatabase
     std::vector<Movie*> get_movies_with_genre(const std::string& genre) const;
 
   private:
+    TreeMultimap<std::string, Movie*> directorMap;
+    TreeMultimap<std::string, Movie*> actorMap;
+    TreeMultimap<std::string, Movie*> genreMap;
+    
+    TreeMultimap<std::string, Movie*> idMap;
+    
+    bool isLoaded;
+    std::vector<std::string> getVectorFromString(const std::string& stringList) const;
+    
+    std::string toLower(const std::string& word) const;
 };
 
 #endif // MOVIEDATABASE_INCLUDED
