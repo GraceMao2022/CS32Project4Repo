@@ -9,7 +9,7 @@
 #include <vector>
 using namespace std;
 
-//#include "treemm.h"
+#include "treemm.h"
 
 MovieDatabase::MovieDatabase()
 {
@@ -35,6 +35,7 @@ bool MovieDatabase::load(const string& filename)
         while(movieDataFile)
         {
             getline (movieDataFile, line);
+            
             if(line != "")
             {
                 if(movieInfo.size() == 6)
@@ -44,10 +45,12 @@ bool MovieDatabase::load(const string& filename)
             }
             else
             {
+                //cerr << movieInfo[0] << endl;
+                //cerr << movieInfo[1] << endl;
                 vector<string> directors = getVectorFromString(movieInfo[3]);
                 vector<string> actors = getVectorFromString(movieInfo[4]);
                 vector<string> genres = getVectorFromString(movieInfo[5]);
-                Movie* newMovie = new Movie(toLower(movieInfo[0]), toLower(movieInfo[1]), movieInfo[2], directors, actors, genres, rating);
+                Movie* newMovie = new Movie(movieInfo[0], movieInfo[1], movieInfo[2], directors, actors, genres, rating);
                 
                 idMap.insert(toLower(movieInfo[0]), newMovie);
                 
@@ -71,14 +74,25 @@ bool MovieDatabase::load(const string& filename)
 
 Movie* MovieDatabase::get_movie_from_id(const string& id) const
 {
-    if(!idMap.find(id).is_valid())
+    if(!idMap.find(toLower(id)).is_valid())
         return nullptr;
-    return idMap.find(id).get_value();
+    return idMap.find(toLower(id)).get_value();
 }
 
 vector<Movie*> MovieDatabase::get_movies_with_director(const string& director) const
 {
-    return vector<Movie*>();  // Replace this line with correct code.
+    if(!directorMap.find(toLower(director)).is_valid())
+        return vector<Movie*>();
+    vector<Movie*> movies;
+    
+    TreeMultimap<string, Movie*>::Iterator it = directorMap.find(toLower(director));
+    
+    while(it.is_valid())
+    {
+        movies.push_back(it.get_value());
+        it.advance();
+    }
+    return movies;
 }
 
 vector<Movie*> MovieDatabase::get_movies_with_actor(const string& actor) const

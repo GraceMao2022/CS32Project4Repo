@@ -4,6 +4,16 @@
 #include <string>
 using namespace std;
 
+#include <iostream>
+#include <algorithm>
+#include <numeric>  // for std::accumulate
+#include <utility>
+#include <vector>
+#include <string>
+#include <random>
+#include <cmath>
+#include <cassert>
+
 
 #include "treemm.h"
 #include "MovieDatabase.h"
@@ -30,16 +40,57 @@ using namespace std;
 const string USER_DATAFILE  = "users.txt";
 const string MOVIE_DATAFILE = "movies.txt";
 
+#include <chrono>
+
+class Timer
+{
+  public:
+    Timer()
+    {
+        start();
+    }
+    void start()
+    {
+        m_time = std::chrono::high_resolution_clock::now();
+    }
+    double elapsed() const
+    {
+        std::chrono::duration<double, std::milli> diff =
+                          std::chrono::high_resolution_clock::now() - m_time;
+        return diff.count();
+    }
+  private:
+    std::chrono::high_resolution_clock::time_point m_time;
+};
+
+void report(string caption, double t)
+{
+    if (t >= 1)
+        t = round(100*t) / 100;
+    cout << t << " milliseconds; " << caption
+             ;
+    cout << endl;
+}
+
 int main()
 {
     MovieDatabase mdb;
-    mdb.load("movie2.txt");
     
-    Movie* movie = mdb.get_movie_from_id("ID10782");
+    Timer timer;
+    timer.start();
+    
+    mdb.load("movies.txt");
+    report("load movies.txt", timer.elapsed());
+    
+    Movie* movie = mdb.get_movie_from_id("Id16725");
     if(movie == nullptr)
         cerr << "movie not found through id" << endl;
     else
         cerr << movie->get_title() << endl;
+    
+    vector<Movie*> movies = mdb.get_movies_with_director("scott di lalla");
+    for(int i = 0; i < movies.size(); i++)
+        cerr << movies[i]->get_title() << endl;
     //TreeMultimap<int, int> tmm;
    /* TreeMultimap<int,int>::Iterator it;
     if (!it.is_valid()) std::cout << "This will print!\n";
