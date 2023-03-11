@@ -18,6 +18,8 @@ using namespace std;
 #include "treemm.h"
 #include "MovieDatabase.h"
 #include "Movie.h"
+#include "UserDatabase.h"
+#include "User.h"
 
 //////////////////////////i/////////////////////////////////////////////////////
 //
@@ -82,6 +84,9 @@ int main()
     mdb.load("movies.txt");
     report("load movies.txt", timer.elapsed());
     
+    if(!mdb.load("movies.txt"))
+        cerr << "cannot load movies.txt again" << endl;
+    
     Movie* movie = mdb.get_movie_from_id("Id16725");
     if(movie == nullptr)
         cerr << "movie not found through id" << endl;
@@ -92,9 +97,23 @@ int main()
     for(int i = 0; i < movies.size(); i++)
         cerr << movies[i]->get_title() << endl;
     
-    vector<Movie*> movies1 = mdb.get_movies_with_actor("tom cruise");
+    /*vector<Movie*> movies1 = mdb.get_movies_with_actor("tom cruise");
     for(int i = 0; i < movies1.size(); i++)
-        cerr << movies1[i]->get_title() << endl;
+        cerr << movies1[i]->get_title() << endl;*/
+    
+    UserDatabase userdb;
+    Timer timer1;
+    timer1.start();
+    
+    userdb.load("users.txt");
+    report("load users.txt", timer1.elapsed());
+    
+    User* user = userdb.get_user_from_email("sappho@poetry.org");
+    if(user == nullptr)
+        cerr << "user not found through email" << endl;
+    else
+        cerr << user->get_watch_history().size() << endl;
+    
     //TreeMultimap<int, int> tmm;
    /* TreeMultimap<int,int>::Iterator it;
     if (!it.is_valid()) std::cout << "This will print!\n";

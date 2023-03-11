@@ -5,6 +5,7 @@
 #include <vector>
 
 class User;
+#include "treemm.h"
 
 class UserDatabase
 {
@@ -14,7 +15,11 @@ class UserDatabase
     User* get_user_from_email(const std::string& email) const;
 
   private:
-    std::vector<User*> users;
+    //std::vector<User*> users;
+    
+    TreeMultimap<std::string, User*> emailMap;
+    
+    bool isLoaded;
 };
 
 #endif // USERDATABASE_INCLUDED
