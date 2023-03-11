@@ -91,6 +91,10 @@ int main()
     vector<Movie*> movies = mdb.get_movies_with_director("scott di lalla");
     for(int i = 0; i < movies.size(); i++)
         cerr << movies[i]->get_title() << endl;
+    
+    vector<Movie*> movies1 = mdb.get_movies_with_actor("tom cruise");
+    for(int i = 0; i < movies1.size(); i++)
+        cerr << movies1[i]->get_title() << endl;
     //TreeMultimap<int, int> tmm;
    /* TreeMultimap<int,int>::Iterator it;
     if (!it.is_valid()) std::cout << "This will print!\n";
