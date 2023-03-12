@@ -9,6 +9,7 @@
 #include <unordered_map>
 #include <unordered_set>
 #include <map>
+#include <algorithm>
 using namespace std;
 
 Recommender::Recommender(const UserDatabase& user_database,
