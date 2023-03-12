@@ -16,11 +16,11 @@ class UserDatabase
     User* get_user_from_email(const std::string& email) const;
 
   private:
-    std::vector<User*> userList;
+    std::vector<User*> userList; //stores pointers to all the User objects
     
-    TreeMultimap<std::string, User*> emailMap;
+    TreeMultimap<std::string, User*> emailMap; //tree for email map with email as key, user pointers as values
     
-    bool isLoaded;
+    bool isLoaded; //becomes true once user database is loaded in the first time
 };
 
 #endif // USERDATABASE_INCLUDED

@@ -25,14 +25,11 @@ class Recommender
   public:
     Recommender(const UserDatabase& user_database,
                 const MovieDatabase& movie_database);
-    std::vector<MovieAndRank> recommend_movies(const std::string& user_email,
-                                               int movie_count) const;
+    std::vector<MovieAndRank> recommend_movies(const std::string& user_email, int movie_count) const;
 
   private:
-    const UserDatabase* userDB;
-    const MovieDatabase* movieDB;
+    const UserDatabase* userDB; //const reference to user database
+    const MovieDatabase* movieDB; //const reference to movie database
 };
-
-//bool compareMovieAndRank(const MovieAndRank& lhs, const MovieAndRank& rhs, const MovieDatabase& movieDB);
 
 #endif // RECOMMENDER_INCLUDED

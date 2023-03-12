@@ -19,15 +19,16 @@ class MovieDatabase
     std::vector<Movie*> get_movies_with_genre(const std::string& genre) const;
 
   private:
-    std::vector<Movie*> movieList;
+    std::vector<Movie*> movieList; //stores pointers to all the Movie objects
     
-    TreeMultimap<std::string, Movie*> directorMap;
-    TreeMultimap<std::string, Movie*> actorMap;
-    TreeMultimap<std::string, Movie*> genreMap;
+    TreeMultimap<std::string, Movie*> directorMap; //tree for director map with director as key, movie pointers as values
+    TreeMultimap<std::string, Movie*> actorMap; //tree for actor map with actor as key, movie pointers as values
+    TreeMultimap<std::string, Movie*> genreMap; //tree for genre map with genre as key, movie pointers as values
     
-    TreeMultimap<std::string, Movie*> idMap;
+    TreeMultimap<std::string, Movie*> idMap; //tree for id map with id as key, movie pointers as values
     
-    bool isLoaded;
+    bool isLoaded; //becomes true once movie database is loaded in the first time
+    
     std::vector<std::string> getVectorFromString(const std::string& stringList) const;
     
     std::string toLower(const std::string& word) const;

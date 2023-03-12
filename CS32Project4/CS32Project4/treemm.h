@@ -8,17 +8,16 @@ template <typename KeyType, typename ValueType>
 class TreeMultimap
 {
     private:
-      //std::vector<Iterator> keys;
       struct Node
       {
           Node(KeyType keyValue) {key = keyValue;}
-          std::vector<ValueType> values;
+          std::vector<ValueType> values; //stores values under key of this node
           KeyType key;
           Node*    right;
           Node*    left;
       };
-      Node* m_head;
-      int size;
+      Node* m_head; //root node of tree
+    
   public:
     class Iterator
     {
@@ -34,11 +33,6 @@ class TreeMultimap
             this->node = node;
             currIndex = 0;
         }
-        
-        ~Iterator()
-        {
-           
-        }
 
         ValueType& get_value() const
         {
@@ -47,6 +41,7 @@ class TreeMultimap
 
         bool is_valid() const
         {
+            //if node has an actual node and if the currIndex is within the range of the node's vector of ValueTypes
             return node != nullptr && (currIndex >= 0 && currIndex < node->values.size());
         }
 
@@ -56,20 +51,18 @@ class TreeMultimap
         }
 
       private:
-        Node* node;
-        int currIndex;
+        Node* node; //used to access all the values under the given key for this iterator
+        int currIndex; //accesses the current value iterator is pointing to
     
     };
 
     TreeMultimap()
     {
         m_head = nullptr;
-        // Replace this line with correct code.
     }
 
     ~TreeMultimap()
     {
-        //Node* p = m_head;
         deleteNode(m_head);
         m_head = nullptr;
     }
@@ -87,21 +80,7 @@ class TreeMultimap
 
     void insert(const KeyType& key, const ValueType& value)
     {
-        /*Iterator existingKey = find(key);
-        //if key exists already
-        if(existingKey.is_valid())
-        {
-            existingKey.values.push_back(new ValueType(value));
-        }
-        else
-        {
-            if(m_head == nullptr)
-            {
-                m_head = new Node(key);
-                return;
-            }
-        }*/
-        
+        //if there are no nodes in tree yet
         if(m_head == nullptr)
         {
             m_head = new Node(key);
@@ -113,16 +92,20 @@ class TreeMultimap
         Node* currNode = m_head;
         for(;;)
         {
+            //if inserted key already exists in the tree
             if(key == currNode->key)
             {
-                //std::cerr << key << std::endl;
+                //add value to node with same key
                 currNode->values.push_back(value);
                 return;
             }
-            if(key < currNode->key)
+            //if inserted key should go to the left of current node
+            else if(key < currNode->key)
             {
+                //if there are still nodes to the left, continue going left in the tree
                 if(currNode->left != nullptr)
                     currNode = currNode->left;
+                //if there are no more nodes to the left, add new node to the tree
                 else
                 {
                     currNode->left = new Node(key);
@@ -132,10 +115,13 @@ class TreeMultimap
                     return;
                 }
             }
+            //if inserted key should go to the right of current node
             else if(key > currNode->key)
             {
+                //if there are still nodes to the right, continue going right in the tree
                 if(currNode->right != nullptr)
                     currNode = currNode->right;
+                //if there are no more nodes to the right, add new node to the tree
                 else
                 {
                     currNode->right = new Node(key);
@@ -151,6 +137,8 @@ class TreeMultimap
     Iterator find(const KeyType& key) const
     {
         Node* currNode = m_head;
+        
+        //continue going left or right in the tree until key is found
         while(currNode != nullptr)
         {
             if(key == currNode->key)
@@ -160,7 +148,8 @@ class TreeMultimap
             else
                 currNode = currNode->right;
         }
-        //std::cerr << "item not found" << std::endl;
+        
+        //if key is not found in the tree
         return Iterator();
     }
 };
