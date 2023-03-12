@@ -37,21 +37,12 @@ class TreeMultimap
         
         ~Iterator()
         {
-            /*delete key;
-            
-            vector<ValueType*>::iterator it = v.begin();
-            while(it != v.end())
-            {
-                delete *it;
-                it = v.erase(it);
-            }*/
+           
         }
 
         ValueType& get_value() const
         {
-            //if(is_valid())
-                return node->values[currIndex];
-            
+            return node->values[currIndex];
         }
 
         bool is_valid() const
@@ -66,7 +57,6 @@ class TreeMultimap
 
       private:
         Node* node;
-        //std::vector<ValueType*> values;
         int currIndex;
     
     };
@@ -79,14 +69,20 @@ class TreeMultimap
 
     ~TreeMultimap()
     {
-        Node* p = m_head;
-        //create a new Node that stores the next node, delete the current node, and set current node to the next node
-        while(p != nullptr)
-        {
-            Node* n = p->right;
-            delete p;
-            p = n;
-        }
+        //Node* p = m_head;
+        deleteNode(m_head);
+        m_head = nullptr;
+    }
+    
+    void deleteNode(Node* node)
+    {
+        if(node == nullptr)
+            return;
+        
+        deleteNode(node->left);
+        deleteNode(node->right);
+        
+        delete node;
     }
 
     void insert(const KeyType& key, const ValueType& value)

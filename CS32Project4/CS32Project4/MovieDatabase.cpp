@@ -19,7 +19,6 @@ MovieDatabase::MovieDatabase()
 MovieDatabase::~MovieDatabase()
 {
     vector<Movie*>::iterator it = movieList.begin();
-    cerr << movieList.size() << endl;
     while(it != movieList.end())
     {
         delete *it;
