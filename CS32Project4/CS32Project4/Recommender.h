@@ -7,6 +7,9 @@
 class UserDatabase;
 class MovieDatabase;
 
+#include "UserDatabase.h"
+#include "MovieDatabase.h"
+
 struct MovieAndRank
 {
     MovieAndRank(const std::string& id, int score)
@@ -26,6 +29,10 @@ class Recommender
                                                int movie_count) const;
 
   private:
+    const UserDatabase* userDB;
+    const MovieDatabase* movieDB;
 };
+
+//bool compareMovieAndRank(const MovieAndRank& lhs, const MovieAndRank& rhs, const MovieDatabase& movieDB);
 
 #endif // RECOMMENDER_INCLUDED

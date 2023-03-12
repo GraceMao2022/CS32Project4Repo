@@ -20,6 +20,7 @@ using namespace std;
 #include "Movie.h"
 #include "UserDatabase.h"
 #include "User.h"
+#include "Recommender.h"
 
 //////////////////////////i/////////////////////////////////////////////////////
 //
@@ -74,6 +75,31 @@ void report(string caption, double t)
     cout << endl;
 }
 
+void findMatches(const Recommender& r,const MovieDatabase& md,const string& user_email,int num_recommendations) {
+ // get up to ten movie recommendations for the user
+    Timer timer;
+    timer.start();
+    
+ vector<MovieAndRank> recommendations =
+ r.recommend_movies(user_email, num_recommendations);
+
+    report("recommend movies", timer.elapsed());
+    
+    
+ if (recommendations.empty())
+ cout << "We found no movies to recommend :(.\n";
+ else {
+for (int i = 0; i < recommendations.size(); i++) {
+ const MovieAndRank& mr = recommendations[i];
+ Movie* m = md.get_movie_from_id(mr.movie_id);
+ cout << i << ". " << m->get_title() << " ("
+ << m->get_release_year() << ")\n Rating: "
+ << m->get_rating() << "\n Compatibility Score: "
+ << mr.compatibility_score << "\n";
+}
+ }
+}
+
 int main()
 {
     MovieDatabase mdb;
@@ -113,6 +139,10 @@ int main()
         cerr << "user not found through email" << endl;
     else
         cerr << user->get_watch_history().size() << endl;
+    
+    Recommender r(userdb, mdb);
+    findMatches(r, mdb, "HezekF0394@aol.com", 20);
+    
     
     //TreeMultimap<int, int> tmm;
    /* TreeMultimap<int,int>::Iterator it;
