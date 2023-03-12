@@ -16,6 +16,17 @@ MovieDatabase::MovieDatabase()
     isLoaded = false;
 }
 
+MovieDatabase::~MovieDatabase()
+{
+    vector<Movie*>::iterator it = movieList.begin();
+    cerr << movieList.size() << endl;
+    while(it != movieList.end())
+    {
+        delete *it;
+        it = movieList.erase(it);
+    }
+}
+
 bool MovieDatabase::load(const string& filename)
 {
     if(!isLoaded)
@@ -60,6 +71,8 @@ bool MovieDatabase::load(const string& filename)
                     actorMap.insert(toLower(actors[i]), newMovie);
                 for(int i = 0; i < genres.size(); i++)
                     genreMap.insert(toLower(genres[i]), newMovie);
+                
+                movieList.push_back(newMovie);
                 
                 movieInfo.clear();
                 rating = -1;

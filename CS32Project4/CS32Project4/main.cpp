@@ -153,7 +153,7 @@ int main()
 		cout << "Failed to load user data file " << USER_DATAFILE << "!" << endl;
 		return 1;
 	}
-	for (;;)
+	/*for (;;)
 	{
 		cout << "Enter user email address (or quit): ";
 		string email;
@@ -165,5 +165,5 @@ int main()
 			cout << "No user in the database has that email address." << endl;
 		else
 			cout << "Found " << u->get_full_name() << endl;
-	}
+	}*/
 }

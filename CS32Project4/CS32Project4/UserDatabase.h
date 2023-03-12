@@ -11,11 +11,12 @@ class UserDatabase
 {
   public:
     UserDatabase();
+    ~UserDatabase();
     bool load(const std::string& filename);
     User* get_user_from_email(const std::string& email) const;
 
   private:
-    //std::vector<User*> users;
+    std::vector<User*> userList;
     
     TreeMultimap<std::string, User*> emailMap;
     

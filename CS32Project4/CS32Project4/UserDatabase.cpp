@@ -16,6 +16,16 @@ UserDatabase::UserDatabase()
     isLoaded = false;
 }
 
+UserDatabase::~UserDatabase()
+{
+    vector<User*>::iterator it = userList.begin();
+    while(it != userList.end())
+    {
+        delete *it;
+        it = userList.erase(it);
+    }
+}
+
 bool UserDatabase::load(const string& filename)
 {
     if(!isLoaded)
@@ -51,6 +61,7 @@ bool UserDatabase::load(const string& filename)
                 User* newUser = new User(userInfo[0], userInfo[1], movies);
                 
                 emailMap.insert(userInfo[1], newUser);
+                userList.push_back(newUser);
                 
                 userInfo.clear();
                 movies.clear();
