@@ -26,6 +26,12 @@ vector<MovieAndRank> Recommender::recommend_movies(const string& user_email, int
         return vector<MovieAndRank>();
     
     User* user = userDB->get_user_from_email(user_email);
+    
+    //if user not found
+    if(user == nullptr)
+        return vector<MovieAndRank>();
+    
+    //get movies watched by user
     vector<string> watchedMovies = user->get_watch_history();
     
     //hash map with the movie id as the key and compatibility score as value

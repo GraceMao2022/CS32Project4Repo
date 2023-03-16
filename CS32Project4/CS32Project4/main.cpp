@@ -119,13 +119,19 @@ int main()
     else
         cerr << movie->get_title() << endl;
     
-    vector<Movie*> movies = mdb.get_movies_with_director("scott di lalla");
+    /*vector<Movie*> movies = mdb.get_movies_with_director("scott di lalla");
     for(int i = 0; i < movies.size(); i++)
         cerr << movies[i]->get_title() << endl;
     
-    /*vector<Movie*> movies1 = mdb.get_movies_with_actor("tom cruise");
+    vector<Movie*> movies1 = mdb.get_movies_with_actor("tom cruise");
     for(int i = 0; i < movies1.size(); i++)
         cerr << movies1[i]->get_title() << endl;*/
+    
+    cerr << "crim" << endl;
+    vector<Movie*> movies2 = mdb.get_movies_with_genre("crim");
+    for(int i = 0; i < movies2.size(); i++)
+        cerr << movies2[i]->get_title() << endl;
+    cerr << "" << endl;
     
     UserDatabase userdb;
     Timer timer1;
@@ -141,18 +147,18 @@ int main()
         cerr << user->get_watch_history().size() << endl;
     
     Recommender r(userdb, mdb);
-    findMatches(r, mdb, "HezekF0394@aol.com", 20);
+    findMatches(r, mdb, "HezekF0394@aol.com",  5);
     
     
-    //TreeMultimap<int, int> tmm;
-   /* TreeMultimap<int,int>::Iterator it;
+    //TreeMultimap<int, int> tmm2;
+    TreeMultimap<int,int>::Iterator it;
     if (!it.is_valid()) std::cout << "This will print!\n";
     
     TreeMultimap<std::string, string>* tmmptr =
      new TreeMultimap<std::string, string>();
      tmmptr->insert("carey", "hi");
      tmmptr->insert("cindy", "bye");
-     delete tmmptr; // TreeMultimap's destructor runs
+     delete tmmptr; // TreeMultimap's destructor runs*/
     
     TreeMultimap<std::string, int> tmm;
      tmm.insert("carey", 5);
@@ -176,7 +182,7 @@ int main()
     }
      TreeMultimap<std::string, int>::Iterator it3 = tmm.find("laura");
      if (!it3.is_valid())
-     std::cout << "laura is not in the multimap!\n";*/
+     std::cout << "laura is not in the multimap!\n";
 	UserDatabase udb;
 	if (0&&!udb.load(USER_DATAFILE))  // In skeleton, load always return false
 	{
